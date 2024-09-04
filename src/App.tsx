@@ -4,8 +4,10 @@ import MainPage from './MainPage';
 function App() {
 
 
-  return <TonConnectUIProvider>
-    manifestUrl = "https://ton-connect.github.io/demo-dapp-with-wallet/";
+  return <TonConnectUIProvider
+  manifestUrl = "https://ton-connect.github.io/demo-dapp-with-wallet/"
+  >
+   
     <MainPage />
   </TonConnectUIProvider>
 }
