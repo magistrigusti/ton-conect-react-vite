@@ -1,13 +1,11 @@
-import Header from './Header'
+import { Header } from "./Header"
+import { SendTx } from './SendTx';
 
-const MainPage = () => {
+export const MainPage = () => {
   return (
     <div>
       <Header />
-      <h1>Welcome to TON Connect React Vite!</h1>
-      <p>This is the main page.</p>
+      <SendTx />
     </div>
   )
 }
-
-export default MainPage;
