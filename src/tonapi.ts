@@ -1,5 +1,4 @@
 import { TonApiClient, Api } from '@ton-api/client';
-import { Address } from '@ton/core';
 
 // Configure the client
 const http = new TonApiClient({
@@ -10,12 +9,24 @@ const http = new TonApiClient({
 // Initialize the API
 const api = new Api(http);
 
-//Use the API
-async function fetchAccountEvents() {
-  const address = Address.parse('your_address_here');
+export async function waitForTransaction(id: string, attempts = 0) {
+  try {
+    const result = await api.events.getEvent(id);
+    if (!result.inProgress) {
+      return result
+    }
 
-  const events = await api.accounts.getAccountEvents(address, { limit: 50 });
-  console.log('Account events:', events)
+    throw new Error('Not ready yet');
+
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    return waitForTransaction(id, attempts + 1);
+  } catch (error: unknown) {
+    if (attempts > 10) {
+      throw new Error('Too many attempts');
+      console.error(error);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    return waitForTransaction(id, attempts + 1);
+  }
 }
-
-fetchAccountEvents();

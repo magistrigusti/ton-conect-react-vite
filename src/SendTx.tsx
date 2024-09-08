@@ -1,5 +1,7 @@
 import { useTonConnectModal, useTonWallet, useTonConnectUI } from "@tonconnect/ui-react"
 import { SendTransactionRequest } from "@tonconnect/ui-react";
+import { Cell } from '@ton/core';
+import { waitForTransaction } from './tonapi.ts';
 
 export const SendTx = () => {
   const wallet = useTonWallet();
@@ -20,7 +22,9 @@ export const SendTx = () => {
     }
 
     const result = await tonConnectUI.sendTransaction(tx);
-    console.log(result.boc);
+    const cell = Cell.fromBase64(result.boc);
+    const event = await waitForTransaction(cell.hash().toString('hex'));
+    console.log(event);
   }
 
   

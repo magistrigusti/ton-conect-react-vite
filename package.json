@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ton-api/client": "^0.1.0",
+    "@ton/core": "^0.57.0",
     "@tonconnect/ui-react": "^2.0.9",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
@@ -26,6 +27,7 @@
     "globals": "^15.9.0",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.0.1",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "vite-plugin-node-polyfills": "^0.22.0"
   }
 }
