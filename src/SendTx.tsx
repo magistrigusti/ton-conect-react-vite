@@ -15,8 +15,8 @@ export const SendTx = () => {
     const payload = beginCell()
       .storeUint(0x0f8a7ea5, 32)
       .storeUint(0, 64)
-      .storeCoins(0.15)
-      .storeAddress(jw)
+      .storeCoins(1)
+      .storeAddress(Address.parse('UQBH1A7LGcrv3_N61S3g_pnLY0bq5I6XUY18oh9wIpCfFq5o'))
       .storeAddress(Address.parse(wallet!.account.address))
       .storeMaybeRef()
       .storeCoins(0)
@@ -29,8 +29,8 @@ export const SendTx = () => {
       from: wallet!.account.address,
       messages: [
         {
-          address: 'UQBH1A7LGcrv3_N61S3g_pnLY0bq5I6XUY18oh9wIpCfFq5o',
-          amount: '10000000',
+          address: jw,
+          amount: '150000000',
           payload
         }
       ]
