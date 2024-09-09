@@ -1,7 +1,7 @@
 import { useTonConnectModal, useTonWallet, useTonConnectUI } from "@tonconnect/ui-react"
 import { SendTransactionRequest } from "@tonconnect/ui-react";
-import { Cell } from '@ton/core';
-import { waitForTransaction } from './tonapi.ts';
+import { Cell, beginCell, Address } from '@ton/core';
+import { waitForTransaction, getJettonWalletAddress } from './tonapi.ts';
 
 export const SendTx = () => {
   const wallet = useTonWallet();
@@ -9,6 +9,20 @@ export const SendTx = () => {
   const [ tonConnectUI ] = useTonConnectUI();
 
   const onSendTx = async () => {
+    const jw = await getJettonWalletAddress(wallet!.account.address);
+    console.log(jw);
+
+    const payload = beginCell()
+      .storeUint(0x0f8a7ea5, 32)
+      .storeUint(0, 64)
+      .storeCoins(0.15)
+      .storeAddress(jw)
+      .storeAddress(Address.parse(wallet!.account.address))
+      .storeMaybeRef()
+      .storeCoins(0)
+      .storeMaybeRef()
+    .endCell().toBoc().toString('base64')
+
     const tx: SendTransactionRequest = {
       validUntil: Math.round(Date.now() / 1000) + 60 * 5,
       network: wallet?.account.chain,
@@ -16,7 +30,8 @@ export const SendTx = () => {
       messages: [
         {
           address: 'UQBH1A7LGcrv3_N61S3g_pnLY0bq5I6XUY18oh9wIpCfFq5o',
-          amount: '10000000'
+          amount: '10000000',
+          payload
         }
       ]
     }
