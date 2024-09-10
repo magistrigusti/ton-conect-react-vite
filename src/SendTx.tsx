@@ -2,13 +2,17 @@ import { useTonConnectModal, useTonWallet, useTonConnectUI } from "@tonconnect/u
 import { SendTransactionRequest } from "@tonconnect/ui-react";
 import { Cell, beginCell, Address } from '@ton/core';
 import { waitForTransaction, getJettonWalletAddress } from './tonapi.ts';
+import { useState } from 'react';
 
 export const SendTx = () => {
   const wallet = useTonWallet();
   const { open } = useTonConnectModal();
   const [ tonConnectUI ] = useTonConnectUI();
+  const [isTxProgress, setIsTxProgress] = useState(false);  
 
   const onSendTx = async () => {
+    setIsTxProgress(true);
+
     const jw = await getJettonWalletAddress(wallet!.account.address);
     console.log(jw);
 
@@ -40,6 +44,8 @@ export const SendTx = () => {
     const cell = Cell.fromBase64(result.boc);
     const event = await waitForTransaction(cell.hash().toString('hex'));
     console.log(event);
+
+    setIsTxProgress(false);
   }
 
   
@@ -50,7 +56,7 @@ export const SendTx = () => {
 
   return (
     <>
-      <button onClick={onSendTx}>Send transaction</button>
+      <button disabled={isTxProgress} onClick={onSendTx}>{isTxProgress ? "Send transaction" : 'Progress...'}</button>
     </>
   )
 }
