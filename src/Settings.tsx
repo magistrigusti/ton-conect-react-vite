@@ -4,9 +4,13 @@ import { useTonConnectUI, Locales, THEME } from '@tonconnect/ui-react';
 export const Settings = () => {
   const [lang, setLang] = useState('en');
   const [theme, setTheme] = useState(THEME.DARK);
-  const [_ , setOptions] = useTonConnectUI()
+  const [tonConnectUI , setOptions] = useTonConnectUI()
 
   useEffect(() => {
+    tonConnectUI.uiOptions = {
+      language: lang as Locales
+    }
+
     setOptions({
       language: lang as Locales
     })
@@ -22,12 +26,12 @@ export const Settings = () => {
 
   return (
     <div>
-      <select value={ lang } onSelect={ e => setLang(e.target.value)}>
+      <select value={ lang } onChange={ e => setLang(e.target.value)}>
         <option value='ru'>ru</option>
         <option value='en'>en</option>
       </select>
 
-      <select value={theme} onSelect={ e => setTheme(e.target.value)} >
+      <select value={theme} onChange={ e => setTheme(e.target.value)} >
         <option value={THEME.DARK} >Dark</option>
         <option value={THEME.LIGHT}>Light</option>
       </select>

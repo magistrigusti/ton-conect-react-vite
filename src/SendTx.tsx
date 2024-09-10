@@ -40,7 +40,10 @@ export const SendTx = () => {
       ]
     }
 
-    const result = await tonConnectUI.sendTransaction(tx);
+    const result = await tonConnectUI.sendTransaction(tx, {
+      modals: 'all',
+      notifications: ['before']
+    });
     const cell = Cell.fromBase64(result.boc);
     const event = await waitForTransaction(cell.hash().toString('hex'));
     console.log(event);
